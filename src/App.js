@@ -1,39 +1,36 @@
 // MyComponent.jsx
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import './App.scss'
-import Tank from './tank/tank';
+import "./App.scss";
+import Card from 'react-bootstrap/Card';
+import Tank from "./tank/tank";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { CiWarning } from "react-icons/ci";
+import CollapsibleExample from "./Navbar/Nav";
 
 const baseURL = "https://sore-red-nightingale-tutu.cyclic.app/api/get";
 
 function MyComponent() {
   const [data, setData] = useState([]);
   const [isChecked, setIsChecked] = useState(true);
-  const [waterlevel,setWaterlevel]= useState(0);
+  const [waterlevel, setWaterlevel] = useState(0);
 
-  
   useEffect(() => {
-     
-
     const fetchData = async () => {
       try {
         // Your asynchronous logic goes here
         axios.get(baseURL).then((response) => {
-          setData(response.data)
+          setData(response.data);
           response.data.map((e) => {
             if (e._id === "654de9edd47767a2a0b3c4cd") {
-              setIsChecked(e.isMotorOn)
-              setWaterlevel(e.waterLevel)
+              setIsChecked(e.isMotorOn);
+              setWaterlevel(e.waterLevel);
             }
-          })
-    
-    
-        })
-       
+          });
+        });
       } catch (error) {
-        console.error('Error:', error);
+        console.error("Error:", error);
       }
     };
 
@@ -46,40 +43,44 @@ function MyComponent() {
     };
   }, []);
 
-
   const handleUpdate = async () => {
     try {
       // Make a PUT request to the server API
-     
+      const response = await axios.put(
+        `https://sore-red-nightingale-tutu.cyclic.app/runFunction2`,
+        {}
+      );
 
       // Handle the response as needed
-    
     } catch (error) {
-      console.error('Error updating boolean value:', error);
+      console.error("Error updating boolean value:", error);
     }
-    setData([{
-      "_id": "654de9edd47767a2a0b3c4cd",
-      "isMotorOn": false
-    }])
+    setData([
+      {
+        _id: "654de9edd47767a2a0b3c4cd",
+        isMotorOn: true,
+      },
+    ]);
   };
-
 
   const handleUpdate2 = async () => {
     try {
       // Make a PUT request to the server API
-      const response = await axios.put(`https://sore-red-nightingale-tutu.cyclic.app/runFunction`, {});
-
+      const response = await axios.put(
+        `https://sore-red-nightingale-tutu.cyclic.app/runFunction`,
+        {}
+      );
 
       // Handle the response as needed
-    
     } catch (error) {
-      console.error('Error updating boolean value:', error);
+      console.error("Error updating boolean value:", error);
     }
-    setData([{
-      "_id": "654de9edd47767a2a0b3c4cd",
-      "isMotorOn": true
-    }])
-
+    setData([
+      {
+        _id: "654de9edd47767a2a0b3c4cd",
+        isMotorOn: true,
+      },
+    ]);
   };
 
   // const handleUpdate = async (id) => {
@@ -108,33 +109,34 @@ function MyComponent() {
     // Update the state when the checkbox is toggled
     if (isChecked === true) {
       setIsChecked(!isChecked);
-      handleUpdate()
+      handleUpdate();
     } else if (isChecked === false) {
       setIsChecked(!isChecked);
-      handleUpdate2()
+      handleUpdate2();
     }
   };
 
-
-
-
   return (
+    <>
+    <CollapsibleExample/>
+
+    <Card className="text-center">
+      <Card.Header>WATER LEVEL DETECTION AND MONITORING SYSTEM</Card.Header>
+    </Card>
+
     <div>
-    <section  id="abcd" >
-
-    <div className="checkbox">
-        <input
-          className="checkbox__input"
-          type="checkbox"
-          checked={isChecked}
-          id="checkbox"
-          onChange={handleCheckboxChange}
-        />
-        <label className="checkbox__label" htmlFor="checkbox"></label>
-      </div>
-    </section>
-      
-
+      <section id="abcd">
+        <div className="checkbox">
+          <input
+            className="checkbox__input"
+            type="checkbox"
+            checked={isChecked}
+            id="checkbox"
+            onChange={handleCheckboxChange}
+          />
+          <label className="checkbox__label" htmlFor="checkbox"></label>
+        </div>
+      </section>
 
       {/* <p>Checkbox is {isChecked ? 'checked' : 'unchecked'}</p>
       <button onClick={() => console.log(isChecked)}>ok</button>
@@ -143,27 +145,31 @@ function MyComponent() {
         checked={isChecked}
         onChange={handleCheckboxChange}
       /> */}
-{/* 
+      {/* 
       <h1>My Data</h1>
       <button onClick={() => console.log(waterlevel)}>Console</button>
       <button onClick={() => handleUpdate()}>MOTOR off</button>
       <button onClick={() => handleUpdate2()}>MOTOR on</button> */}
 
-
-
       <div>
         {data.map((element, index) => {
           if (element.isMotorOn === true) {
-            return <h2 key={index} id="ab">Motor is Running<CiWarning size={60} color='red'/>
-            </h2>;
+            return (
+              <h2 key={index} id="ab">
+                Motor is Running
+                <CiWarning size={60} color="red" />
+              </h2>
+            );
           }
 
           return <h2 id="ab">Currently Motor is Off !!</h2>;
-        })}</div>
+        })}
+      </div>
+      
 
-
-      <Tank value={waterlevel}/>
+      <Tank value={waterlevel} />
     </div>
+    </>
   );
 }
 
