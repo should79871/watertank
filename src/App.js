@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import emailjs from '@emailjs/browser';
 import "./App.scss";
 import Card from 'react-bootstrap/Card';
 import Tank from "./tank/tank";
@@ -37,11 +38,22 @@ function MyComponent() {
     fetchData();
     const intervalId = setInterval(() => {
       fetchData();
-    }, 10000);
+    }, 5000);
     return () => {
       clearInterval(intervalId);
     };
   }, []);
+
+
+  const SentMail=(e)=>{
+    emailjs.send("service_ihvfsln","template_gope4mi",{
+      to_name: "Abhishek",
+      from_name: "Raspberry Pi",
+      message:`Motor is ${e} @ ${new Date().toLocaleString() } and WaterLevel is ${Math.round(waterlevel)}% `,
+      //message:`Waterlevel is: `,
+      
+      },"SCW-1BQe2OcqzPlku");
+  }
 
   const handleUpdate = async () => {
     try {
@@ -110,9 +122,11 @@ function MyComponent() {
     if (isChecked === true) {
       setIsChecked(!isChecked);
       handleUpdate();
+      SentMail("Switched Off");
     } else if (isChecked === false) {
       setIsChecked(!isChecked);
       handleUpdate2();
+      SentMail("Started");
     }
   };
 
