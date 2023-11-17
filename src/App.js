@@ -143,8 +143,6 @@ function MyComponent() {
     <Card className="text-center">
       <Card.Header>WATER LEVEL DETECTION AND MONITORING SYSTEM</Card.Header>
     </Card>
-    <button onClick={()=>console.log(ipAddress)}>printip</button>
-
     <div>
       <section id="abcd">
         <div className="checkbox">
