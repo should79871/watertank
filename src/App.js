@@ -16,6 +16,7 @@ function MyComponent() {
   const [data, setData] = useState([]);
   const [isChecked, setIsChecked] = useState(true);
   const [waterlevel, setWaterlevel] = useState(0);
+  const [ipAddress, setIPAddress] = useState('')
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +36,11 @@ function MyComponent() {
       }
     };
 
+    fetch('https://api.ipify.org?format=json')
+    .then(response => response.json())
+    .then(data => setIPAddress(data.ip))
+    .catch(error => console.log(error))
+
     fetchData();
     const intervalId = setInterval(() => {
       fetchData();
@@ -49,7 +55,7 @@ function MyComponent() {
     emailjs.send("service_ihvfsln","template_gope4mi",{
       to_name: "Abhishek",
       from_name: "Raspberry Pi",
-      message:`Motor is ${e} @ ${new Date().toLocaleString() } and WaterLevel is ${Math.round(waterlevel)}% `,
+      message:`Motor is ${e} at ${new Date().toLocaleString() } using device having IP Address ${ipAddress} and WaterLevel is ${Math.round(waterlevel)}% `,
       //message:`Waterlevel is: `,
       
       },"SCW-1BQe2OcqzPlku");
@@ -137,6 +143,7 @@ function MyComponent() {
     <Card className="text-center">
       <Card.Header>WATER LEVEL DETECTION AND MONITORING SYSTEM</Card.Header>
     </Card>
+    <button onClick={()=>console.log(ipAddress)}>printip</button>
 
     <div>
       <section id="abcd">
