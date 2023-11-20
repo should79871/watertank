@@ -36,14 +36,16 @@ function MyComponent() {
       }
     };
 
-    fetch('https://api.ipify.org?format=json')
-    .then(response => response.json())
-    .then(data => setIPAddress(data.ip))
-    .catch(error => console.log(error))
+    const getData = async () => {
+      const res = await axios.get("https://api.ipify.org/?format=json");
+      console.log(res.data);
+      setIPAddress(res.data.ip);
+    };
 
     fetchData();
     const intervalId = setInterval(() => {
       fetchData();
+      getData();
     }, 5000);
     return () => {
       clearInterval(intervalId);
@@ -52,13 +54,13 @@ function MyComponent() {
 
 
   const SentMail=(e)=>{
-    emailjs.send("service_ihvfsln","template_gope4mi",{
+    emailjs.send("service_i4duh87","template_qhggu62",{
       to_name: "Abhishek",
       from_name: "Raspberry Pi",
       message:`Motor is ${e} at ${new Date().toLocaleString() } using device having IP Address ${ipAddress} and WaterLevel is ${Math.round(waterlevel)}% `,
       //message:`Waterlevel is: `,
       
-      },"SCW-1BQe2OcqzPlku");
+      },"pyroi0Ev5pTjgp826");
   }
 
   const handleUpdate = async () => {
@@ -143,7 +145,10 @@ function MyComponent() {
     <Card className="text-center">
       <Card.Header>WATER LEVEL DETECTION AND MONITORING SYSTEM</Card.Header>
     </Card>
+
+
     <div>
+     
       <section id="abcd">
         <div className="checkbox">
           <input
